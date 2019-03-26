@@ -1,17 +1,16 @@
-package tests
+package main
 
 import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
-	"olahcitra/main"
 	"testing"
 )
 
 func router() *mux.Router {
 	router := mux.NewRouter()
-	router.HandleFunc("/", main.HomePage).Methods("GET")
+	router.HandleFunc("/", HomePage).Methods("GET")
 	return router
 }
 
