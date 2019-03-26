@@ -23,3 +23,7 @@ func HomePage(res http.ResponseWriter, req *http.Request) {
 	returnData := Message{true, "Welcome to Olah Citra", nil}
 	_ = json.NewEncoder(res).Encode(returnData)
 }
+
+func ToInverse(res http.ResponseWriter, req *http.Request) {
+	_ = json.NewEncoder(res).Encode(req.Body)
+}
