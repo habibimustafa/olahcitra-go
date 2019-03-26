@@ -29,7 +29,7 @@ func TestConvertCitraToInverse(t *testing.T) {
 	var pixelC = Pixel{Red: 150, Green: 175, Blue: 200}
 	var gambar = Citra{Data: []Pixel{pixelA, pixelB, pixelC}}
 
-	inv := gambar.toInverse()
+	inv := gambar.Inverse()
 	assert.Equal(t, 3, len(inv.Data))
 	assert.Equal(t, 255., inv.Data[0].Red)
 	assert.Equal(t, 230., inv.Data[0].Green)

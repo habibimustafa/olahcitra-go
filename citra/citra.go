@@ -4,7 +4,7 @@ type Citra struct {
 	Data []Pixel
 }
 
-func (c Citra) toInverse() Citra {
+func (c Citra) Inverse() Citra {
 	n := c
 	for i, elm := range c.Data {
 		n.Data[i] = elm.Inverse()
@@ -13,7 +13,7 @@ func (c Citra) toInverse() Citra {
 	return n
 }
 
-func (c Citra) toGray() Citra {
+func (c Citra) Gray() Citra {
 	n := c
 	for i, elm := range c.Data {
 		n.Data[i] = elm.Inverse()
@@ -22,7 +22,7 @@ func (c Citra) toGray() Citra {
 	return n
 }
 
-func (c Citra) toBinary() Citra {
+func (c Citra) Binary() Citra {
 	n := c
 	for i, elm := range c.Data {
 		n.Data[i] = elm.Binary()
