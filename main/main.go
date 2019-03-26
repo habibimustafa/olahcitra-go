@@ -43,7 +43,9 @@ func ToInverse(res http.ResponseWriter, req *http.Request) {
 		_ = append(pixels, pixel)
 	}
 
-	gambar := citra.Citra{Data: pixels}
+	img := citra.Citra{Data: pixels}
+	inv := img.Inverse()
 
-	_ = json.NewEncoder(res).Encode(gambar)
+	returnData := Message{true, "Converting to inverse success", inv}
+	_ = json.NewEncoder(res).Encode(returnData)
 }
