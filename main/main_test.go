@@ -41,4 +41,10 @@ func TestToInverse(t *testing.T) {
 	router().ServeHTTP(res, req)
 
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
+
+	var resBody Message
+	_ = json.Unmarshal(res.Body.Bytes(), &resBody)
+
+	assert.True(t, resBody.Success)
+	assert.Equal(t, "Converting to inverse success", resBody.Message)
 }
