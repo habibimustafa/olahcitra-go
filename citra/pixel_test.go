@@ -50,3 +50,10 @@ func TestPixelToBinaryRoundDown(t *testing.T) {
 	assert.Equal(t, actual.Blue, actual.Red)
 	assert.Equal(t, expected, actual)
 }
+
+func TestPixelToArray(t *testing.T) {
+	var before = Pixel{Red: 100, Green: 75, Blue: 25}
+	var actual = before.Array()
+	var expected = []float64{100, 75, 25}
+	assert.Equal(t, actual, expected)
+}
