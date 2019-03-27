@@ -41,3 +41,13 @@ func TestConvertCitraToInverse(t *testing.T) {
 	assert.Equal(t, 80., inv.Data[2].Green)
 	assert.Equal(t, 55., inv.Data[2].Blue)
 }
+
+func TestCitraToArray(t *testing.T) {
+	var pixelA = Pixel{Red: 0, Green: 25, Blue: 50}
+	var pixelB = Pixel{Red: 75, Green: 100, Blue: 125}
+	var pixelC = Pixel{Red: 150, Green: 175, Blue: 200}
+	var before = Citra{Data: []Pixel{pixelA, pixelB, pixelC}}
+	var actual = before.Array()
+	var expected = [][]float64{{0, 25, 50}, {75, 100, 125}, {150, 175, 200}}
+	assert.Equal(t, expected, actual)
+}
