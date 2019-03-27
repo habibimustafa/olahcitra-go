@@ -30,3 +30,13 @@ func (c Citra) Binary() Citra {
 
 	return n
 }
+
+func (c Citra) Array() interface{} {
+	var data [][]float64
+
+	for _, elm := range c.Data {
+		data = append(data, elm.Array().([]float64))
+	}
+
+	return data
+}
