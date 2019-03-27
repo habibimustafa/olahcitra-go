@@ -40,12 +40,12 @@ func ToInverse(res http.ResponseWriter, req *http.Request) {
 	var pixels []citra.Pixel
 	for _, elm := range jsonParam {
 		pixel := citra.Pixel{Red: elm[0], Green: elm[1], Blue: elm[2]}
-		_ = append(pixels, pixel)
+		pixels = append(pixels, pixel)
 	}
 
 	img := citra.Citra{Data: pixels}
 	inv := img.Inverse()
 
-	returnData := Message{true, "Converting to inverse success", inv}
+	returnData := Message{true, "Converting to inverse success", inv.Array()}
 	_ = json.NewEncoder(res).Encode(returnData)
 }
