@@ -42,6 +42,28 @@ func TestConvertCitraToInverse(t *testing.T) {
 	assert.Equal(t, 55., inv.Data[2].Blue)
 }
 
+func TestConvertCitraToGray(t *testing.T) {
+	var pixelA = Pixel{Red: 0, Green: 25, Blue: 50}
+	var pixelB = Pixel{Red: 75, Green: 100, Blue: 125}
+	var pixelC = Pixel{Red: 150, Green: 175, Blue: 200}
+	var gambar = Citra{Data: []Pixel{pixelA, pixelB, pixelC}}
+
+	inv := gambar.Gray()
+	assert.Equal(t, 3, len(inv.Data))
+
+	for _, pixel := range inv.Data {
+		pixelArray := pixel.Array().([]float64)
+		for j := range pixelArray {
+			k := j + 1
+			if k == len(pixelArray) {
+				k = 0
+			}
+
+			assert.Equal(t, pixelArray[j], pixelArray[k])
+		}
+	}
+}
+
 func TestCitraToArray(t *testing.T) {
 	var pixelA = Pixel{Red: 0, Green: 25, Blue: 50}
 	var pixelB = Pixel{Red: 75, Green: 100, Blue: 125}
