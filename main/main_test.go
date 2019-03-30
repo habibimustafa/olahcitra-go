@@ -99,22 +99,7 @@ func TestToBinary(t *testing.T) {
 	assert.Equal(t, "Converting to binary success", result.Message)
 
 	actual := getResultBody(result)
+	expected := [][]float64{{0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}}
 	assert.Equal(t, 4, len(actual))
-
-	var expected [][]float64
-	for _, px := range data {
-		var pixel []float64
-		for _, e := range px {
-			ex := e
-			if ex > 128 {
-				ex = 255
-			} else {
-				ex = 0
-			}
-			pixel = append(pixel, float64(ex))
-		}
-		expected = append(expected, pixel)
-	}
-
 	assert.Equal(t, expected, actual)
 }
