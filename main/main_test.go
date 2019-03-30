@@ -52,3 +52,42 @@ func TestToInverse(t *testing.T) {
 	expectedBody := [][]float64{{200, 200, 200}, {180, 180, 180}, {130, 130, 130}}
 	assert.Equal(t, expectedBody, resBody)
 }
+
+func TestToGray(t *testing.T) {
+	data := [][]int{{0, 25, 50}, {75, 100, 125}, {150, 175, 200}}
+	jsonData, _ := json.Marshal(&data)
+
+	req, _ := http.NewRequest("POST", "/grayscale", bytes.NewBuffer(jsonData))
+	res := httptest.NewRecorder()
+	router().ServeHTTP(res, req)
+
+	assert.Equal(t, 200, res.Code, "Expect OK Response")
+
+	var result Message
+	_ = json.Unmarshal(res.Body.Bytes(), &result)
+
+	assert.True(t, result.Success)
+	assert.Equal(t, "Converting to inverse success", result.Message)
+
+	var resBody [][]float64
+	for _, p := range result.Body.([]interface{}) {
+		var pixel []float64
+		for _, q := range p.([]interface{}) {
+			pixel = append(pixel, q.(float64))
+		}
+		resBody = append(resBody, pixel)
+	}
+
+	assert.Equal(t, 3, len(resBody))
+
+	for _, pixel := range resBody {
+		for j := range pixel {
+			k := j + 1
+			if k == len(pixel) {
+				k = 0
+			}
+
+			assert.Equal(t, pixel[j], pixel[k])
+		}
+	}
+}
