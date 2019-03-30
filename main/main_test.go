@@ -9,6 +9,19 @@ import (
 	"testing"
 )
 
+func getResultBody(result Message) [][]float64 {
+	var resBody [][]float64
+	for _, p := range result.Body.([]interface{}) {
+		var pixel []float64
+		for _, q := range p.([]interface{}) {
+			pixel = append(pixel, q.(float64))
+		}
+		resBody = append(resBody, pixel)
+	}
+
+	return resBody
+}
+
 func TestHomePage(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/", nil)
 	res := httptest.NewRecorder()
@@ -40,15 +53,7 @@ func TestToInverse(t *testing.T) {
 	assert.True(t, result.Success)
 	assert.Equal(t, "Converting to inverse success", result.Message)
 
-	var resBody [][]float64
-	for _, p := range result.Body.([]interface{}) {
-		var pixel []float64
-		for _, q := range p.([]interface{}) {
-			pixel = append(pixel, q.(float64))
-		}
-		resBody = append(resBody, pixel)
-	}
-
+	resBody := getResultBody(result)
 	expectedBody := [][]float64{{200, 200, 200}, {180, 180, 180}, {130, 130, 130}}
 	assert.Equal(t, expectedBody, resBody)
 }
@@ -69,17 +74,7 @@ func TestToGray(t *testing.T) {
 	assert.True(t, result.Success)
 	assert.Equal(t, "Converting to grayscale success", result.Message)
 
-	var resBody [][]float64
-	for _, p := range result.Body.([]interface{}) {
-		var pixel []float64
-		for _, q := range p.([]interface{}) {
-			pixel = append(pixel, q.(float64))
-		}
-		resBody = append(resBody, pixel)
-	}
-
-	assert.Equal(t, 3, len(resBody))
-
+	resBody := getResultBody(result)
 	for _, pixel := range resBody {
 		for j := range pixel {
 			k := j + 1
@@ -108,15 +103,7 @@ func TestToBinary(t *testing.T) {
 	assert.True(t, result.Success)
 	assert.Equal(t, "Converting to binary success", result.Message)
 
-	var actual [][]float64
-	for _, p := range result.Body.([]interface{}) {
-		var pixel []float64
-		for _, q := range p.([]interface{}) {
-			pixel = append(pixel, q.(float64))
-		}
-		actual = append(actual, pixel)
-	}
-
+	actual := getResultBody(result)
 	assert.Equal(t, 4, len(actual))
 
 	var expected [][]float64
