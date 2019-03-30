@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -22,11 +23,16 @@ func getResultBody(result Message) [][]float64 {
 	return resBody
 }
 
-func TestHomePage(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/", nil)
+func createRequest(method string, url string, body io.Reader) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, url, body)
 	res := httptest.NewRecorder()
 	router().ServeHTTP(res, req)
 
+	return res
+}
+
+func TestHomePage(t *testing.T) {
+	res := createRequest("GET", "/", nil)
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
 
 	var resBody Message
@@ -41,10 +47,7 @@ func TestToInverse(t *testing.T) {
 	data := [][]int{{55, 55, 55}, {75, 75, 75}, {125, 125, 125}}
 	jsonData, _ := json.Marshal(&data)
 
-	req, _ := http.NewRequest("POST", "/inverse", bytes.NewBuffer(jsonData))
-	res := httptest.NewRecorder()
-	router().ServeHTTP(res, req)
-
+	res := createRequest("POST", "/inverse", bytes.NewBuffer(jsonData))
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
 
 	var result Message
@@ -62,10 +65,7 @@ func TestToGray(t *testing.T) {
 	data := [][]int{{0, 25, 50}, {75, 100, 125}, {150, 175, 200}}
 	jsonData, _ := json.Marshal(&data)
 
-	req, _ := http.NewRequest("POST", "/grayscale", bytes.NewBuffer(jsonData))
-	res := httptest.NewRecorder()
-	router().ServeHTTP(res, req)
-
+	res := createRequest("POST", "/grayscale", bytes.NewBuffer(jsonData))
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
 
 	var result Message
@@ -91,10 +91,7 @@ func TestToBinary(t *testing.T) {
 	data := [][]int{{0, 25, 50}, {75, 100, 125}, {150, 175, 200}, {225, 250, 255}}
 	jsonData, _ := json.Marshal(&data)
 
-	req, _ := http.NewRequest("POST", "/binary", bytes.NewBuffer(jsonData))
-	res := httptest.NewRecorder()
-	router().ServeHTTP(res, req)
-
+	res := createRequest("POST", "/binary", bytes.NewBuffer(jsonData))
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
 
 	var result Message
