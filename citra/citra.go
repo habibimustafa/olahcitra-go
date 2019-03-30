@@ -16,7 +16,7 @@ func (c Citra) Inverse() Citra {
 func (c Citra) Gray() Citra {
 	n := c
 	for i, elm := range c.Data {
-		n.Data[i] = elm.Inverse()
+		n.Data[i] = elm.GrayScale()
 	}
 
 	return n
