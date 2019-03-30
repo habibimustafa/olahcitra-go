@@ -21,6 +21,18 @@ func TestCreatingCitra(t *testing.T) {
 	assert.Equal(t, 150., img.Data[2].Red)
 	assert.Equal(t, 175., img.Data[2].Green)
 	assert.Equal(t, 200., img.Data[2].Blue)
+
+	var img2 = NewCitra([]Pixel{pixelA, pixelB, pixelC})
+	assert.Equal(t, 3, len(img2.Data))
+	assert.Equal(t, 0., img2.Data[0].Red)
+	assert.Equal(t, 25., img2.Data[0].Green)
+	assert.Equal(t, 50., img2.Data[0].Blue)
+	assert.Equal(t, 75., img2.Data[1].Red)
+	assert.Equal(t, 100., img2.Data[1].Green)
+	assert.Equal(t, 125., img2.Data[1].Blue)
+	assert.Equal(t, 150., img2.Data[2].Red)
+	assert.Equal(t, 175., img2.Data[2].Green)
+	assert.Equal(t, 200., img2.Data[2].Blue)
 }
 
 func TestConvertCitraToInverse(t *testing.T) {

@@ -40,3 +40,7 @@ func (c Citra) Array() interface{} {
 
 	return data
 }
+
+func NewCitra(pixels []Pixel) Citra {
+	return Citra{Data: pixels}
+}
