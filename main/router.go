@@ -67,7 +67,7 @@ func ToGrayScale(res http.ResponseWriter, req *http.Request) {
 	img := citra.Citra{Data: pixels}
 	img.Gray()
 
-	returnData := Message{true, "Converting to inverse success", img.Array()}
+	returnData := Message{true, "Converting to grayscale success", img.Array()}
 	_ = json.NewEncoder(res).Encode(returnData)
 }
 

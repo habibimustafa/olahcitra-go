@@ -67,7 +67,7 @@ func TestToGray(t *testing.T) {
 	_ = json.Unmarshal(res.Body.Bytes(), &result)
 
 	assert.True(t, result.Success)
-	assert.Equal(t, "Converting to inverse success", result.Message)
+	assert.Equal(t, "Converting to grayscale success", result.Message)
 
 	var resBody [][]float64
 	for _, p := range result.Body.([]interface{}) {
