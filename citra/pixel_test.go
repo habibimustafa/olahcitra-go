@@ -10,6 +10,11 @@ func TestCreatingPixel(t *testing.T) {
 	assert.Equal(t, 100., pixel.Red)
 	assert.Equal(t, 200., pixel.Green)
 	assert.Equal(t, 55., pixel.Blue)
+
+	var pixel2 = NewPixel(100, 200, 55)
+	assert.Equal(t, 100., pixel2.Red)
+	assert.Equal(t, 200., pixel2.Green)
+	assert.Equal(t, 55., pixel2.Blue)
 }
 
 func TestInversePixel(t *testing.T) {

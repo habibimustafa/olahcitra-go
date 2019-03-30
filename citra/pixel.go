@@ -44,3 +44,7 @@ func (p Pixel) Binary() Pixel {
 func (p Pixel) Array() interface{} {
 	return []float64{p.Red, p.Green, p.Blue}
 }
+
+func NewPixel(red float64, green float64, blue float64) Pixel {
+	return Pixel{Red: red, Green: green, Blue: blue}
+}
