@@ -12,6 +12,7 @@ func router() *mux.Router {
 	router.HandleFunc("/", HomePage).Methods("GET")
 	router.HandleFunc("/inverse", ToInverse).Methods("POST")
 	router.HandleFunc("/grayscale", ToGrayScale).Methods("POST")
+	router.HandleFunc("/binary", toBinary).Methods("POST")
 	return router
 }
 
@@ -67,5 +68,30 @@ func ToGrayScale(res http.ResponseWriter, req *http.Request) {
 	img.Gray()
 
 	returnData := Message{true, "Converting to inverse success", img.Array()}
+	_ = json.NewEncoder(res).Encode(returnData)
+}
+
+func toBinary(res http.ResponseWriter, req *http.Request) {
+	var jsonParam [][]float64
+
+	decoder := json.NewDecoder(req.Body)
+	if err := decoder.Decode(&jsonParam); err != nil {
+		returnData := Message{false, "Failed decoding data", nil}
+		_ = json.NewEncoder(res).Encode(returnData)
+		return
+	}
+
+	defer req.Body.Close()
+
+	var pixels []citra.Pixel
+	for _, elm := range jsonParam {
+		pixel := citra.Pixel{Red: elm[0], Green: elm[1], Blue: elm[2]}
+		pixels = append(pixels, pixel)
+	}
+
+	img := citra.Citra{Data: pixels}
+	img.Binary()
+
+	returnData := Message{true, "Converting to binary success", img.Array()}
 	_ = json.NewEncoder(res).Encode(returnData)
 }
