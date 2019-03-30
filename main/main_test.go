@@ -10,6 +10,14 @@ import (
 	"testing"
 )
 
+func createRequest(method string, url string, body io.Reader) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, url, body)
+	res := httptest.NewRecorder()
+	router().ServeHTTP(res, req)
+
+	return res
+}
+
 func getResultBody(result Message) [][]float64 {
 	var resBody [][]float64
 	for _, p := range result.Body.([]interface{}) {
@@ -23,24 +31,20 @@ func getResultBody(result Message) [][]float64 {
 	return resBody
 }
 
-func createRequest(method string, url string, body io.Reader) *httptest.ResponseRecorder {
-	req, _ := http.NewRequest(method, url, body)
-	res := httptest.NewRecorder()
-	router().ServeHTTP(res, req)
-
-	return res
+func getResult(res *httptest.ResponseRecorder) Message {
+	var resBody Message
+	_ = json.Unmarshal(res.Body.Bytes(), &resBody)
+	return resBody
 }
 
 func TestHomePage(t *testing.T) {
 	res := createRequest("GET", "/", nil)
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
+	result := getResult(res)
 
-	var resBody Message
-	_ = json.Unmarshal(res.Body.Bytes(), &resBody)
-
-	assert.True(t, resBody.Success)
-	assert.Equal(t, "Welcome to Olah Citra", resBody.Message)
-	assert.Nil(t, resBody.Body)
+	assert.True(t, result.Success)
+	assert.Equal(t, "Welcome to Olah Citra", result.Message)
+	assert.Nil(t, result.Body)
 }
 
 func TestToInverse(t *testing.T) {
@@ -50,9 +54,7 @@ func TestToInverse(t *testing.T) {
 	res := createRequest("POST", "/inverse", bytes.NewBuffer(jsonData))
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
 
-	var result Message
-	_ = json.Unmarshal(res.Body.Bytes(), &result)
-
+	result := getResult(res)
 	assert.True(t, result.Success)
 	assert.Equal(t, "Converting to inverse success", result.Message)
 
@@ -68,9 +70,7 @@ func TestToGray(t *testing.T) {
 	res := createRequest("POST", "/grayscale", bytes.NewBuffer(jsonData))
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
 
-	var result Message
-	_ = json.Unmarshal(res.Body.Bytes(), &result)
-
+	result := getResult(res)
 	assert.True(t, result.Success)
 	assert.Equal(t, "Converting to grayscale success", result.Message)
 
@@ -94,9 +94,7 @@ func TestToBinary(t *testing.T) {
 	res := createRequest("POST", "/binary", bytes.NewBuffer(jsonData))
 	assert.Equal(t, 200, res.Code, "Expect OK Response")
 
-	var result Message
-	_ = json.Unmarshal(res.Body.Bytes(), &result)
-
+	result := getResult(res)
 	assert.True(t, result.Success)
 	assert.Equal(t, "Converting to binary success", result.Message)
 
